@@ -1,3 +1,5 @@
+`pip install -U roundmantissa`
+
 # roundmantissa
 
 Tiny library :baby_chick: that rounds floating point numbers based on the length of their mantissa.
