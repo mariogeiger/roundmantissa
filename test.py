@@ -3,6 +3,9 @@ import numpy as np
 from roundmantissa import round_mantissa
 from roundmantissa.numpy import round_mantissa as round_mantissa_numpy
 
+assert round_mantissa(5.0, 0) == 4.0
+assert round_mantissa(5.0, 1) == 4.0
+assert round_mantissa(5.0, 2) == 5.0
 assert round_mantissa(0.0, 2) == 0.0
 assert round_mantissa(0.50123, 2) == 0.5
 
