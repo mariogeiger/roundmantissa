@@ -26,6 +26,7 @@ setup(
     name="roundmantissa",
     version=find_version("roundmantissa", "__init__.py"),
     description="Round mantissa of a float number",
+    url="https://github.com/mariogeiger/roundmantissa",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(exclude=["tests.*", "tests"]),
