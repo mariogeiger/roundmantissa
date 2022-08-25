@@ -1,6 +1,20 @@
 import numpy as np
 
 
+def _generic_mantissa(op, x: np.ndarray, n: int) -> np.ndarray:
+    def fn(x):
+        s = np.sign(x)
+        x = np.abs(x)
+        a = np.floor(np.log2(x))
+        x = x / 2**a
+        assert np.all(1.0 <= x) and np.all(x < 2.0), x
+        x = op(x * 2**n) / 2**n
+        x = x * 2**a
+        return s * x
+
+    return np.where(x == 0.0, 0.0, fn(np.where(x == 0.0, 1.0, x)))
+
+
 def round_mantissa(x: np.ndarray, n: int) -> np.ndarray:
     """Round number
 
@@ -13,23 +27,46 @@ def round_mantissa(x: np.ndarray, n: int) -> np.ndarray:
 
     Example:
         >>> round_mantissa(0.5 + 0.25 + 0.125, 0)
-        1.0
+        array(1.)
 
         >>> round_mantissa(0.5 + 0.25 + 0.125, 2)
-        0.875
+        array(0.875)
     """
+    return _generic_mantissa(np.round, x, n)
 
-    def fn(x):
-        s = np.sign(x)
-        x = np.abs(x)
-        a = np.floor(np.log2(x))
-        x = x / 2**a
-        assert np.all(1.0 <= x) and np.all(x < 2.0), x
-        x = np.round(x * 2**n) / 2**n
-        x = x * 2**a
-        return s * x
 
-    return np.where(x == 0.0, 0.0, fn(np.where(x == 0.0, 1.0, x)))
+def floor_mantissa(x: np.ndarray, n: int) -> np.ndarray:
+    """Floor number
+
+    Args:
+        x: number to floor
+        n: number of mantissa digits to keep
+
+    Returns:
+        floored number
+
+    Example:
+        >>> floor_mantissa(0.5 + 0.25 + 0.125, 0)
+        array(0.5)
+    """
+    return _generic_mantissa(np.floor, x, n)
+
+
+def ceil_mantissa(x: np.ndarray, n: int) -> np.ndarray:
+    """Ceil number
+
+    Args:
+        x: number to ceil
+        n: number of mantissa digits to keep
+
+    Returns:
+        ceiled number
+
+    Example:
+        >>> ceil_mantissa(0.5 + 0.25 + 0.125, 0)
+        array(1.)
+    """
+    return _generic_mantissa(np.ceil, x, n)
 
 
 def logspace(start: int, stop: int, n: int) -> np.ndarray:
