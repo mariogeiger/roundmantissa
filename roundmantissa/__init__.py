@@ -1,6 +1,6 @@
 import math
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 
 def _generic_mantissa(op, x: float, n: int) -> float:
